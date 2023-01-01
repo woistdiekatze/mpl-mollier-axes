@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "mpl-mollier-axes"
+version = "0.1.0"
+description = "Matplotlib Axes class providing the transform for plotting 'Mollier-style' psychrometric charts."
+authors = ["woistdiekatze <woistdiekatze.4x61i@simplelogin.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+matplotlib = "^3.6.2"
+PsychroLib = "^2.5.0"
+CoolProp = {version = "^6.4.3", optional = true}
+
+[tool.poetry.extras]
+CoolProp = ["CoolProp"]
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2"
+yapf = "^0.32.0"
+flakeheaven = "^3.2.1"
+flake8-isort = "^6.0.0"
+
+[tool.flakeheaven]
+format = "colored"
+max_line_length = 120
+show_source = true
+whitelist = "../../allowlist.txt"
+
+[tool.flakeheaven.plugins]
+flake8-isort = ["+*"]
+mccabe = ["+*"]
+pycodestyle = ["+*"]
+pyflakes = ["+*"]
+pylint = ["+*"]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
