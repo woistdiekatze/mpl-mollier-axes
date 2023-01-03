@@ -1,8 +1,24 @@
 [tool.poetry]
 name = "mpl-mollier-axes"
-version = "0.1.0"
+version = "0.1.0.post1"
 description = "Matplotlib Axes class providing the transform for plotting 'Mollier-style' psychrometric charts."
 authors = ["woistdiekatze <woistdiekatze.4x61i@simplelogin.com>"]
+license = "MIT"
+readme = "README.rst"
+repository = "https://github.com/woistdiekatze/mpl-mollier-axes"
+classifiers=[
+    "Intended Audience :: Education",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Scientific/Engineering :: Visualization",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.8",
+    "Framework :: Matplotlib",
+]
 
 [tool.poetry.dependencies]
 python = "^3.8"
