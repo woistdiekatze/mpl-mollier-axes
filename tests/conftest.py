@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from pathlib import Path
 from typing import TYPE_CHECKING
 
 import matplotlib.pyplot as plt
@@ -12,12 +13,26 @@ if TYPE_CHECKING:
 
 
 @pytest.fixture
-def fig(request) -> Figure:
+def test_artifact_dir() -> Path:
+    artifact_dir = Path('.') / 'testartifacts'
+    artifact_dir.mkdir(parents=True, exist_ok=True)
+    return artifact_dir
+
+
+@pytest.fixture
+def picture_dir(test_artifact_dir: Path) -> Path:
+    picture_dir = test_artifact_dir / 'pictures'
+    picture_dir.mkdir(parents=True, exist_ok=True)
+    return picture_dir
+
+
+@pytest.fixture
+def fig(picture_dir: Path, request) -> Figure:
     fig = plt.figure()
     yield fig
     marker = request.node.get_closest_marker("fig_filename")
     if marker is not None:
-        fname = marker.args[0]
+        fname = picture_dir / marker.args[0]
         fig.savefig(fname)
     plt.close(fig)
 
