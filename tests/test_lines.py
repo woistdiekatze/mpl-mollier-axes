@@ -16,14 +16,14 @@ def ax(mollier_axes: mol.MollierAxes) -> mol.MollierAxes:
 
 @pytest.mark.fig_filename('sat_line.png')
 def test_saturation_line(mollier_axes: mol.MollierAxes):
-    sat = mollier_axes.draw_saturation_line()
+    sat = mollier_axes.draw_saturation_line(color='red')
     assert isinstance(sat, Line2D)
     assert isinstance(sat, lines.ParametricConstValueLine)
 
 
 @pytest.mark.fig_filename('rh_lines.png')
 def test_const_rh_lines(ax: mol.MollierAxes):
-    rhs = ax.draw_const_rh_lines(*np.linspace(0.1, 0.9, 9))
+    rhs = ax.draw_const_rh_lines(*np.linspace(0.1, 0.9, 9), color='red')
 
     assert len(rhs) == 9
     for RHL in rhs:
@@ -33,7 +33,7 @@ def test_const_rh_lines(ax: mol.MollierAxes):
 
 @pytest.mark.fig_filename('tdb_lines.png')
 def test_const_tdb_lines(ax: mol.MollierAxes):
-    tdbs = ax.draw_const_tdb_lines(*np.linspace(-5, 50, 12))
+    tdbs = ax.draw_const_tdb_lines(*np.linspace(-5, 50, 12), color='red')
 
     assert len(tdbs) == 12
     for TDBL in tdbs:
@@ -43,7 +43,7 @@ def test_const_tdb_lines(ax: mol.MollierAxes):
 
 @pytest.mark.fig_filename('rho_lines.png')
 def test_const_rho_lines(ax: mol.MollierAxes):
-    rhos = ax.draw_const_density_lines(*np.linspace(1.1, 1.3, 5))
+    rhos = ax.draw_const_density_lines(*np.linspace(1.1, 1.3, 5), color='red')
 
     assert len(rhos) == 5
     for RHOL in rhos:
