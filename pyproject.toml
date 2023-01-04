@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "mpl-mollier-axes"
-version = "0.1.0.post1"
+version = "0.2.0-alpha.0"
 description = "Matplotlib Axes class providing the transform for plotting 'Mollier-style' psychrometric charts."
 authors = ["woistdiekatze <woistdiekatze.4x61i@simplelogin.com>"]
 license = "MIT"
