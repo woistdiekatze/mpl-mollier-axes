@@ -48,11 +48,6 @@ pycodestyle = ["+*"]
 pyflakes = ["+*"]
 pylint = ["+*"]
 
-[tool.pytest.ini_options]
-markers = [
-    "fig_filename: sets the filename to save the figure as",
-]
-
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
