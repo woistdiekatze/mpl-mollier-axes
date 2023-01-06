@@ -1,5 +1,6 @@
 from math import atan
 
+import pytest
 import matplotlib.pyplot as plt
 from matplotlib.testing.decorators import check_figures_equal, image_comparison
 
@@ -81,3 +82,10 @@ def test_mollier_projection_different_pressures(fig_test, fig_ref):
     ax_test = fig_test.add_subplot(projection=MollierProjection(
         pressure=750000))
     setup_mollier_axes(ax_test)
+
+
+def test_pressure_gt_0():
+    fig = plt.figure()
+    ax = fig.add_subplot(projection='mollier')
+    with pytest.raises(ValueError, match="pressure must be greater than zero."):
+        ax.pressure = -1.
