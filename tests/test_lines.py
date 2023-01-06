@@ -20,9 +20,7 @@ def setup_mollier_axes(saturation=True):
     return fig, ax
 
 
-@image_comparison(baseline_images=['sat_line'],
-                  remove_text=True,
-                  extensions=['pdf'])
+@image_comparison(baseline_images=['sat_line'], remove_text=True, extensions=['pdf'])
 def test_saturation_line():
     fig, ax = setup_mollier_axes(False)
     sat = ax.draw_saturation_line(color='red')
@@ -30,9 +28,7 @@ def test_saturation_line():
     assert isinstance(sat, lines.ParametricConstValueLine)
 
 
-@image_comparison(baseline_images=['rh_lines'],
-                  remove_text=True,
-                  extensions=['pdf'])
+@image_comparison(baseline_images=['rh_lines'], remove_text=True, extensions=['pdf'])
 def test_const_rh_lines():
     fig, ax = setup_mollier_axes()
     rhs = ax.draw_const_rh_lines(*np.linspace(0.1, 0.9, 9), color='red')
@@ -43,9 +39,7 @@ def test_const_rh_lines():
         assert isinstance(RHL, lines.ParametricConstValueLine)
 
 
-@image_comparison(baseline_images=['tdb_lines'],
-                  remove_text=True,
-                  extensions=['pdf'])
+@image_comparison(baseline_images=['tdb_lines'], remove_text=True, extensions=['pdf'])
 def test_const_tdb_lines():
     fig, ax = setup_mollier_axes()
     tdbs = ax.draw_const_tdb_lines(*np.linspace(-5, 50, 12), color='red')
@@ -56,9 +50,7 @@ def test_const_tdb_lines():
         assert isinstance(TDBL, lines.BoundedConstValueLine)
 
 
-@image_comparison(baseline_images=['rho_lines'],
-                  remove_text=True,
-                  extensions=['pdf'])
+@image_comparison(baseline_images=['rho_lines'], remove_text=True, extensions=['pdf'])
 def test_const_rho_lines():
     fig, ax = setup_mollier_axes()
     rhos = ax.draw_const_density_lines(*np.linspace(1.1, 1.3, 5), color='red')
@@ -69,9 +61,7 @@ def test_const_rho_lines():
         assert isinstance(RHOL, lines.ConstValueLine)
 
 
-@image_comparison(baseline_images=['h_lines'],
-                  remove_text=True,
-                  extensions=['pdf'])
+@image_comparison(baseline_images=['h_lines'], remove_text=True, extensions=['pdf'])
 def test_const_h_lines():
     fig, ax = setup_mollier_axes()
     hs = ax.draw_const_h_lines(*np.linspace(1e4, 3e4, 5), color='red')
@@ -81,9 +71,7 @@ def test_const_h_lines():
         assert isinstance(HL, Line2D)
 
 
-@image_comparison(baseline_images=['w_lines'],
-                  remove_text=True,
-                  extensions=['pdf'])
+@image_comparison(baseline_images=['w_lines'], remove_text=True, extensions=['pdf'])
 def test_const_w_lines():
     fig, ax = setup_mollier_axes()
     ws = ax.draw_const_w_lines(*np.linspace(1e-2, 3e-2, 9), color='red')
@@ -93,9 +81,7 @@ def test_const_w_lines():
         assert isinstance(WL, Line2D)
 
 
-@pytest.mark.parametrize("pressure, baseline_images",
-                         [(p, [f'all_lines_{p:.0f}'])
-                          for p in (101325., 75000., 125000.)])
+@pytest.mark.parametrize("pressure, baseline_images", [(p, [f'all_lines_{p:.0f}']) for p in (101325., 75000., 125000.)])
 @image_comparison(baseline_images=None, remove_text=True, extensions=['pdf'])
 def test_all_lines_at_different_pressures(pressure, baseline_images):
     fig, ax = setup_mollier_axes(False)

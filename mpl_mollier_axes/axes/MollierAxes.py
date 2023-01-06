@@ -20,10 +20,7 @@ _CP_DRY_AIR = 1.006e3  # J / kg K
 class MollierAxes(SkewYAxes):
     name = 'mollier'
 
-    def __init__(self,
-                 *args,
-                 pressure: float = GetStandardAtmPressure(0.),
-                 **kwargs) -> None:
+    def __init__(self, *args, pressure: float = GetStandardAtmPressure(0.), **kwargs) -> None:
         # The skew transformation will be carried out in data coordinates.
         # Thus the skew angle corresponds to the heat of evaporation of pure water at 0 dgrees celsius.
         super().__init__(*args, skewy=-atan(_H_EVAP_H2O_0CELSIUS), **kwargs)
@@ -82,11 +79,7 @@ class MollierAxes(SkewYAxes):
 
         return [_draw_const_tdb_line(TDB) for TDB in tdb]
 
-    def draw_const_density_lines(self,
-                                 *rho,
-                                 color='black',
-                                 linewidth=.5,
-                                 **kwargs):
+    def draw_const_density_lines(self, *rho, color='black', linewidth=.5, **kwargs):
 
         def foo(w, rho):
             V = (1 + w) / rho

@@ -1,7 +1,7 @@
 from math import atan
 
-import pytest
 import matplotlib.pyplot as plt
+import pytest
 from matplotlib.testing.decorators import check_figures_equal, image_comparison
 
 from mpl_mollier_axes import MollierAxes, MollierProjection
@@ -13,9 +13,7 @@ def near(a, b, reltol=1e-9):
     return 2 * abs(a - b) / (a + b) <= reltol
 
 
-@image_comparison(baseline_images=['skew_y_proj'],
-                  remove_text=True,
-                  extensions=['pdf'])
+@image_comparison(baseline_images=['skew_y_proj'], remove_text=True, extensions=['pdf'])
 def test_skew_y_axes():
     angle = 20
     fig = plt.figure()
@@ -38,9 +36,7 @@ def setup_mollier_axes(ax):
     ax.grid(True, which='both')
 
 
-@image_comparison(baseline_images=['mollier_axes'],
-                  remove_text=True,
-                  extensions=['pdf'])
+@image_comparison(baseline_images=['mollier_axes'], remove_text=True, extensions=['pdf'])
 def test_mollier_axes():
     fig = plt.figure()
     ax = fig.add_subplot(projection='mollier')
@@ -79,8 +75,7 @@ def test_mollier_projection_different_pressures(fig_test, fig_ref):
     ax_ref = fig_ref.add_subplot(projection=MollierProjection())
     setup_mollier_axes(ax_ref)
 
-    ax_test = fig_test.add_subplot(projection=MollierProjection(
-        pressure=750000))
+    ax_test = fig_test.add_subplot(projection=MollierProjection(pressure=750000))
     setup_mollier_axes(ax_test)
 
 

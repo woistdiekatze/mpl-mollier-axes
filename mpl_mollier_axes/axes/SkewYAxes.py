@@ -132,13 +132,15 @@ class SkewYAxes(Axes):
 
         self._xaxis_transform = (
             transforms.blended_transform_factory(
-                self.transScale + self.transLimits, transforms.IdentityTransform()
-            ) + self.transAxes
-        )
+                self.transScale + self.transLimits,
+                transforms.IdentityTransform()
+            ) + self.transAxes)
 
-        self._yaxis_transform = (transforms.blended_transform_factory(
-            transforms.BboxTransformTo(self.viewLim),
-            transforms.IdentityTransform()) + self.transData)
+        self._yaxis_transform = (
+            transforms.blended_transform_factory(
+                transforms.BboxTransformTo(self.viewLim),
+                transforms.IdentityTransform()
+            ) + self.transData)
 
     @property
     def left_ylim(self):
