@@ -4,13 +4,7 @@ from matplotlib.lines import Line2D
 
 class ParametricConstValueLine(Line2D):
 
-    def __init__(self,
-                 const_val,
-                 calc_fun,
-                 bound_fun,
-                 *,
-                 n_points: int = 100,
-                 **kwargs) -> None:
+    def __init__(self, const_val, calc_fun, bound_fun, *, n_points: int = 100, **kwargs) -> None:
         super().__init__([0, 1], [0, 1], **kwargs)
         self._const_val = const_val
         self._calc_fun = np.vectorize(calc_fun)
@@ -37,16 +31,8 @@ class ConstValueLine(ParametricConstValueLine):
     transform at draw time.
     """
 
-    def __init__(self,
-                 const_val,
-                 calc_fun,
-                 n_points: int = 100,
-                 **kwargs) -> None:
-        super().__init__(const_val,
-                         calc_fun,
-                         lambda: self.axes.get_xbound(),
-                         n_points=n_points,
-                         **kwargs)
+    def __init__(self, const_val, calc_fun, n_points: int = 100, **kwargs) -> None:
+        super().__init__(const_val, calc_fun, lambda: self.axes.get_xbound(), n_points=n_points, **kwargs)
 
     def get_xbound(self):
         return self._bound_fun()
@@ -66,5 +52,7 @@ class BoundedConstValueLine(ConstValueLine):
 
     def get_xbound(self):
         xmin, xmax = super().get_xbound()
-        return max(self._xmin, xmin) if self._xmin is not None else xmin, min(
-            self._xmax, xmax) if self._xmax is not None else xmax
+        return (
+            max(self._xmin, xmin) if self._xmin is not None else xmin,
+            min(self._xmax, xmax) if self._xmax is not None else xmax
+        )

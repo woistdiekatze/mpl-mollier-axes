@@ -34,6 +34,7 @@ pytest = "^6.2"
 yapf = "^0.32.0"
 flakeheaven = "^3.2.1"
 flake8-isort = "^6.0.0"
+pytest-cov = "^4.0.0"
 
 [tool.flakeheaven]
 format = "colored"
@@ -49,9 +50,21 @@ pyflakes = ["+*"]
 pylint = ["+*"]
 
 [tool.pytest.ini_options]
-markers = [
-    "fig_filename: sets the filename to save the figure as",
+addopts = "-ra -q --cov=./mpl_mollier_axes"
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+exclude_lines = [
+    "if TYPE_CHECKING:"
 ]
+
+[tool.yapf]
+based_on_style = "pep8"
+column_limit = 120
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

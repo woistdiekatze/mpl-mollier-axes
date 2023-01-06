@@ -36,11 +36,16 @@ class SkewYTick(maxis.YTick):
                 stack.callback(artist.set_visible, artist.get_visible())
 
             needs_left = transforms.interval_contains(self.axes.left_ylim, self.get_loc())
-            needs_right = transforms.interval_contains(self.axes.right_ylim, self.get_loc())
             self.tick1line.set_visible(self.tick1line.get_visible() and needs_left)
             self.label1.set_visible(self.label1.get_visible() and needs_left)
+
+            needs_right = transforms.interval_contains(self.axes.right_ylim, self.get_loc())
             self.tick2line.set_visible(self.tick2line.get_visible() and needs_right)
             self.label2.set_visible(self.label2.get_visible() and needs_right)
+
+            needs_grid = transforms.interval_contains(self.get_view_interval(), self.get_loc())
+            self.gridline.set_visible(self.gridline.get_visible() and needs_grid)
+
             super().draw(renderer)
 
     def get_view_interval(self):
@@ -127,13 +132,15 @@ class SkewYAxes(Axes):
 
         self._xaxis_transform = (
             transforms.blended_transform_factory(
-                self.transScale + self.transLimits, transforms.IdentityTransform()
-            ) + self.transAxes
-        )
+                self.transScale + self.transLimits,
+                transforms.IdentityTransform()
+            ) + self.transAxes)
 
-        self._yaxis_transform = (transforms.blended_transform_factory(
-            transforms.BboxTransformTo(self.viewLim),
-            transforms.IdentityTransform()) + self.transData)
+        self._yaxis_transform = (
+            transforms.blended_transform_factory(
+                transforms.BboxTransformTo(self.viewLim),
+                transforms.IdentityTransform()
+            ) + self.transData)
 
     @property
     def left_ylim(self):
