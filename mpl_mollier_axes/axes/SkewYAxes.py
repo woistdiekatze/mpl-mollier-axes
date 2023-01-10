@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from contextlib import ExitStack
-from math import radians
+from math import radians, degrees
 from typing import TYPE_CHECKING
 
 import matplotlib.axis as maxis
@@ -48,6 +48,22 @@ class SkewYTick(maxis.YTick):
 
             super().draw(renderer)
 
+    def update_position(self, loc: int) -> None:
+        super().update_position(loc)
+
+        ax: SkewYAxes = self.axes
+
+        angle, = ax.transData.transform_angles((0, ), ((0, 0), ), radians=True)
+        angle_deg = degrees(angle)
+        trans = transforms.Affine2D().rotate(angle)
+
+        for tickline in (self.tick1line, self.tick2line):
+            tickline._marker._user_transform = trans
+
+        for ticklabel in (self.label1, self.label2):
+            ticklabel.set_rotation_mode('anchor')
+            ticklabel.set_rotation(angle_deg)
+
     def get_view_interval(self):
         return self.axes.yaxis.get_view_interval()
 
@@ -56,8 +72,7 @@ class SkewYTick(maxis.YTick):
 # as well as create instances of the custom tick
 class SkewYAxis(maxis.YAxis):
 
-    def _get_tick(self, major):
-        return SkewYTick(self.axes, None, major=major)
+    _tick_class = SkewYTick
 
     def get_view_interval(self):
         ax: SkewYAxes = self.axes
@@ -70,8 +85,8 @@ class SkewYAxis(maxis.YAxis):
 
 
 # This class exists to calculate the separate data range of the
-# upper X-axis and draw the spine there. It also provides this range
-# to the X-axis artist for ticking and gridlines
+# right Y-axis and draw the spine there. It also provides this range
+# to the Y-axis artist for ticking and gridlines
 class SkewSpine(mspines.Spine):
 
     def _adjust_location(self):
@@ -83,7 +98,7 @@ class SkewSpine(mspines.Spine):
             pts[:, 1] = ax.left_ylim
 
 
-# This class handles registration of the skew-xaxes as a projection as well
+# This class handles registration of the skew-yaxes as a projection as well
 # as setting up the appropriate transformations. It also overrides standard
 # spines and axes instances as appropriate.
 class SkewYAxes(Axes):
@@ -93,10 +108,11 @@ class SkewYAxes(Axes):
         super().__init__(*args, **kwargs)
 
     def set_angle(self, skewy: float) -> None:
+        self._skewy = skewy
         self.transAffine = transforms.Affine2D().skew(0, skewy)
 
     def _init_axis(self):
-        # Taken from Axes and modified to use our modified X-axis
+        # Taken from Axes and modified to use our modified Y-axis
         self.xaxis = maxis.XAxis(self)
         self.spines.top.register_axis(self.xaxis)
         self.spines.bottom.register_axis(self.xaxis)
