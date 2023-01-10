@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added methods to draw lines of constant propertiy values
 
+### Changed
+
+- YTicks and tick labels are rotated by the skew angle of the axes.
+
 ## [0.1.0] - 2023-01-01
 
 ### Added
