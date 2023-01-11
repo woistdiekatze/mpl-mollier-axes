@@ -21,10 +21,11 @@ classifiers=[
 ]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.8,<3.12"
 matplotlib = "^3.6.2"
 PsychroLib = "^2.5.0"
 CoolProp = {version = "^6.4.3", optional = true}
+scipy = "^1.10.0"
 
 [tool.poetry.extras]
 CoolProp = ["CoolProp"]
