@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from contextlib import ExitStack
-from math import radians, degrees
+from math import degrees, radians
 from typing import TYPE_CHECKING
 
 import matplotlib.axis as maxis

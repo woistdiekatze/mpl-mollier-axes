@@ -6,7 +6,8 @@ import pytest
 from matplotlib.lines import Line2D
 from matplotlib.testing.decorators import image_comparison
 
-import mpl_mollier_axes.lines as lines
+import mpl_mollier_axes.lines.base as lines
+import mpl_mollier_axes.lines.psychrometric as plines
 
 
 def setup_mollier_axes(saturation=True):
@@ -26,6 +27,7 @@ def test_saturation_line():
     sat = ax.draw_saturation_line(color='red')
     assert isinstance(sat, Line2D)
     assert isinstance(sat, lines.ParametricConstValueLine)
+    assert isinstance(sat, plines.SaturationLine)
 
 
 @image_comparison(baseline_images=['rh_lines'], remove_text=True, extensions=['pdf'])
@@ -37,6 +39,7 @@ def test_const_rh_lines():
     for RHL in rhs:
         assert isinstance(RHL, Line2D)
         assert isinstance(RHL, lines.ParametricConstValueLine)
+        assert isinstance(RHL, plines.ConstRhLine)
 
 
 @image_comparison(baseline_images=['tdb_lines'], remove_text=True, extensions=['pdf'])
@@ -48,6 +51,7 @@ def test_const_tdb_lines():
     for TDBL in tdbs:
         assert isinstance(TDBL, Line2D)
         assert isinstance(TDBL, lines.BoundedConstValueLine)
+        assert isinstance(TDBL, plines.Isotherm)
 
 
 @image_comparison(baseline_images=['rho_lines'], remove_text=True, extensions=['pdf'])
@@ -59,6 +63,7 @@ def test_const_rho_lines():
     for RHOL in rhos:
         assert isinstance(RHOL, Line2D)
         assert isinstance(RHOL, lines.ConstValueLine)
+        assert isinstance(RHOL, plines.ConstDensityLine)
 
 
 @image_comparison(baseline_images=['h_lines'], remove_text=True, extensions=['pdf'])
