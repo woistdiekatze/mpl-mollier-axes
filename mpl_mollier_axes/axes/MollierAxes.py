@@ -3,8 +3,7 @@ from math import atan
 from matplotlib.projections import register_projection
 from psychrolib import SI, GetStandardAtmPressure, SetUnitSystem
 
-from ..lines.psychrometric import (ConstDensityLine, ConstRhLine, Isotherm,
-                                   SaturationLine)
+from ..lines.psychrometric import ConstDensityLine, ConstRhLine, Isotherm, SaturationLine
 from .SkewYAxes import SkewYAxes
 
 SetUnitSystem(SI)

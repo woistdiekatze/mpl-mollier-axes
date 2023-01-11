@@ -52,7 +52,5 @@ class BoundedConstValueLine(ConstValueLine):
 
     def get_xbound(self):
         xmin, xmax = super().get_xbound()
-        return (
-            max(self._xmin, xmin) if self._xmin is not None else xmin,
-            min(self._xmax, xmax) if self._xmax is not None else xmax
-        )
+        return (max(self._xmin, xmin) if self._xmin is not None else xmin,
+                min(self._xmax, xmax) if self._xmax is not None else xmax)

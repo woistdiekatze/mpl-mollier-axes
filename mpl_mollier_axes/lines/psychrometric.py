@@ -1,8 +1,6 @@
 import numpy as np
-from psychrolib import (GetHumRatioFromRelHum, GetMoistAirDensity,
-                        GetMoistAirEnthalpy, GetSatAirEnthalpy, GetSatHumRatio,
-                        GetSatVapPres,
-                        GetTDryBulbFromMoistAirVolumeAndHumRatio)
+from psychrolib import (GetHumRatioFromRelHum, GetMoistAirDensity, GetMoistAirEnthalpy, GetSatAirEnthalpy,
+                        GetSatHumRatio, GetSatVapPres, GetTDryBulbFromMoistAirVolumeAndHumRatio)
 from scipy.optimize import fsolve
 
 from .base import BoundedConstValueLine, ParametricConstValueLine
