@@ -40,3 +40,8 @@ jobs:
     - name: Test with pytest
       run: |
         python -m poetry run pytest
+    - name: Upload tests artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-artifacts
+        path: tests
