@@ -21,34 +21,25 @@ classifiers=[
 ]
 
 [tool.poetry.dependencies]
-python = "^3.8,<3.12"
+python = "^3.10,<3.15"
 matplotlib = "^3.6.2"
 PsychroLib = "^2.5.0"
 CoolProp = {version = "^6.4.3", optional = true}
-scipy = "^1.10.0"
+scipy = [
+    {version = "^1.10.0", python = "<3.11"},
+    {version = "^1.16.0", python = "^3.11"}
+]
 
 [tool.poetry.extras]
 CoolProp = ["CoolProp"]
 
-[tool.poetry.dev-dependencies]
-pytest = "^6.2"
+[tool.poetry.group.dev.dependencies]
+pytest = "^9.0"
 yapf = "^0.32.0"
-flakeheaven = "^3.2.1"
-flake8-isort = "^6.0.0"
 pytest-cov = "^4.0.0"
-
-[tool.flakeheaven]
-format = "colored"
-max_line_length = 120
-show_source = true
-whitelist = "../../allowlist.txt"
-
-[tool.flakeheaven.plugins]
-flake8-isort = ["+*"]
-mccabe = ["+*"]
-pycodestyle = ["+*"]
-pyflakes = ["+*"]
-pylint = ["+*"]
+flake8 = "^7.3.0"
+flake8-isort = "^6.0.0"
+pycodestyle = "^2.14.0"
 
 [tool.pytest.ini_options]
 addopts = "-ra -q --cov=./mpl_mollier_axes"
