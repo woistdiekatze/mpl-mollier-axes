@@ -30,7 +30,7 @@ scipy = "^1.10.0"
 [tool.poetry.extras]
 CoolProp = ["CoolProp"]
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 pytest = "^6.2"
 yapf = "^0.32.0"
 flakeheaven = "^3.2.1"
