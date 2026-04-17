@@ -25,14 +25,12 @@ def setup_mollier_axes(saturation=True):
 def mollier_ax():
     fig, ax = setup_mollier_axes()
     yield ax
-    plt.close(fig)
 
 
 @pytest.fixture
 def mollier_ax_no_sat():
     fig, ax = setup_mollier_axes(saturation=False)
     yield ax
-    plt.close(fig)
 
 
 @image_comparison(baseline_images=['sat_line'], remove_text=True, extensions=['pdf'])
