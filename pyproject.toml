@@ -25,7 +25,10 @@ python = "^3.10,<3.15"
 matplotlib = "^3.6.2"
 PsychroLib = "^2.5.0"
 CoolProp = {version = "^6.4.3", optional = true}
-scipy = "^1.10.0"
+scipy = [
+    {version = "^1.10.0", python = "<3.11"},
+    {version = "^1.16.0", python = "^3.11"}
+]
 
 [tool.poetry.extras]
 CoolProp = ["CoolProp"]
