@@ -43,5 +43,5 @@ jobs:
     - name: Upload tests artifact
       uses: actions/upload-artifact@v4
       with:
-        name: test-artifacts
+        name: test-artifacts-${{ matrix.python-version }}
         path: result_images
