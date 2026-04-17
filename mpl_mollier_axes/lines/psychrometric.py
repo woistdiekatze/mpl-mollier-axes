@@ -66,7 +66,7 @@ class SaturationLine(ParametricConstValueLine):
 def calc_saturation_data(pressure, num: int = 100):
 
     def _obj(t):
-        return (GetSatVapPres(t) - pressure)**2
+        return (GetSatVapPres(float(t[0])) - pressure)**2
 
     def get_max_t():
         max_t, = fsolve(_obj, 100)
