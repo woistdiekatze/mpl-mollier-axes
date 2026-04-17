@@ -33,22 +33,10 @@ CoolProp = ["CoolProp"]
 [tool.poetry.group.dev.dependencies]
 pytest = "^6.2"
 yapf = "^0.32.0"
-flakeheaven = "^3.2.1"
-flake8-isort = "^6.0.0"
 pytest-cov = "^4.0.0"
-
-[tool.flakeheaven]
-format = "colored"
-max_line_length = 120
-show_source = true
-whitelist = "../../allowlist.txt"
-
-[tool.flakeheaven.plugins]
-flake8-isort = ["+*"]
-mccabe = ["+*"]
-pycodestyle = ["+*"]
-pyflakes = ["+*"]
-pylint = ["+*"]
+flake8 = "^7.3.0"
+flake8-isort = "^6.0.0"
+pycodestyle = "^2.14.0"
 
 [tool.pytest.ini_options]
 addopts = "-ra -q --cov=./mpl_mollier_axes"

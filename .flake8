@@ -1,0 +1,7 @@
+[flake8]
+format = default
+max_line_length = 120
+show_source = true
+max_complexity = 10
+doctests = true
+statistics = true
