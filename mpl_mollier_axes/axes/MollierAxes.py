@@ -35,7 +35,7 @@ class MollierAxes(SkewYAxes):
         # Thus the skew angle corresponds to the heat of evaporation of pure water at 0 dgrees celsius.
         super().__init__(*args, skewy=-atan(_H_EVAP_H2O_0CELSIUS), **kwargs)
         self.pressure = pressure
-        self._backend = backend or get_default_backend()
+        self._backend = backend if backend is not None else get_default_backend()
 
     @property
     def pressure(self):

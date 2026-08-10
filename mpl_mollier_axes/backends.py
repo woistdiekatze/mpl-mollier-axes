@@ -62,8 +62,11 @@ class PsychrolibBackend:
         return self._lib.GetTDryBulbFromMoistAirVolumeAndHumRatio(volume, hum_ratio, pressure)
 
 
-_DEFAULT_BACKEND = PsychrolibBackend()
+_default_backend = None
 
 
 def get_default_backend() -> PsychrometricBackend:
-    return _DEFAULT_BACKEND
+    global _default_backend
+    if _default_backend is None:
+        _default_backend = PsychrolibBackend()
+    return _default_backend

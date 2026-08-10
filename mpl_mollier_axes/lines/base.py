@@ -10,7 +10,7 @@ class ParametricConstValueLine(Line2D):
         self._calc_fun = np.vectorize(calc_fun)
         self._bound_fun = bound_fun
         self._n_points = n_points
-        self._extra_key_fun = extra_key_fun or (lambda: ())
+        self._extra_key_fun = extra_key_fun if extra_key_fun is not None else (lambda: ())
         self._cache_key = None
 
     def get_xbound(self):

@@ -27,7 +27,7 @@ class Isotherm(BoundedConstValueLine):
                  n_points: int = 2,
                  backend: PsychrometricBackend = None,
                  **kwargs) -> None:
-        backend = backend or get_default_backend()
+        backend = backend if backend is not None else get_default_backend()
 
         def calc_fun(w, t):
             return backend.get_moist_air_enthalpy(t, w)
@@ -40,7 +40,7 @@ class Isotherm(BoundedConstValueLine):
 class ConstRhLine(ParametricConstValueLine):
 
     def __init__(self, rh: float, *, n_points: int = 100, backend: PsychrometricBackend = None, **kwargs) -> None:
-        backend = backend or get_default_backend()
+        backend = backend if backend is not None else get_default_backend()
 
         def calc_fun(t, rh):
             w = backend.get_hum_ratio_from_rel_hum(t, rh, self.axes.pressure)
@@ -59,7 +59,7 @@ class ConstRhLine(ParametricConstValueLine):
 class SaturationLine(ParametricConstValueLine):
 
     def __init__(self, *, n_points: int = 100, backend: PsychrometricBackend = None, **kwargs) -> None:
-        backend = backend or get_default_backend()
+        backend = backend if backend is not None else get_default_backend()
 
         def calc_fun(t, _):
             w = backend.get_sat_hum_ratio(t, self.axes.pressure)
@@ -78,7 +78,7 @@ class SaturationLine(ParametricConstValueLine):
 
 
 def calc_saturation_data(pressure, num: int = 100, *, backend: PsychrometricBackend = None):
-    backend = backend or get_default_backend()
+    backend = backend if backend is not None else get_default_backend()
 
     def _obj(t):
         return (backend.get_sat_vap_pres(float(t[0])) - pressure)**2
@@ -103,7 +103,7 @@ class ConstDensityLine(BoundedConstValueLine):
                  xmax: float = None,
                  backend: PsychrometricBackend = None,
                  **kwargs) -> None:
-        backend = backend or get_default_backend()
+        backend = backend if backend is not None else get_default_backend()
 
         wp, tp = calc_saturation_data(pressure, backend=backend)
         rhop = np.vectorize(backend.get_moist_air_density)(tp, wp, pressure)
