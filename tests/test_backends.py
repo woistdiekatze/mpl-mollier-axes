@@ -1,3 +1,6 @@
+import subprocess
+import sys
+
 import matplotlib.pyplot as plt
 
 from mpl_mollier_axes import MollierProjection
@@ -23,6 +26,19 @@ class RecordingBackend(PsychrolibBackend):
 
 def test_get_default_backend_is_a_singleton():
     assert get_default_backend() is get_default_backend()
+
+
+def test_default_backend_is_lazily_initialized():
+    # Run in a subprocess so `mpl_mollier_axes.backends` is imported fresh:
+    # merely importing it must not construct a PsychrolibBackend instance.
+    script = (
+        "import mpl_mollier_axes.backends as b\n"
+        "assert b._default_backend is None, 'backend constructed on import'\n"
+        "backend = b.get_default_backend()\n"
+        "assert b._default_backend is backend\n"
+        "assert isinstance(backend, b.PsychrolibBackend)\n"
+    )
+    subprocess.run([sys.executable, "-c", script], check=True)
 
 
 def test_custom_backend_is_used_for_const_rh_lines():
