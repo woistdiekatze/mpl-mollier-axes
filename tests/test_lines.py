@@ -97,3 +97,46 @@ def test_all_lines_at_different_pressures(pressure, baseline_images):
     ax.draw_const_density_lines(*np.linspace(1.1, 1.3, 5), color='grey')
     ax.draw_const_h_lines(*np.linspace(1e4, 3e4, 5), color='magenta')
     ax.draw_const_w_lines(*np.linspace(1e-2, 3e-2, 9), color='cyan')
+
+
+def test_const_rh_lines_track_pressure_changes():
+    fig, ax = setup_mollier_axes(False)
+    rh, = ax.draw_const_rh_lines(0.5)
+    fig.canvas.draw()
+    data_at_atm = rh.get_data()
+
+    ax.pressure = 75000.
+    fig.canvas.draw()
+    data_at_low_pressure = rh.get_data()
+
+    assert not np.array_equal(data_at_atm, data_at_low_pressure)
+
+
+def test_saturation_line_tracks_pressure_changes():
+    fig, ax = setup_mollier_axes(False)
+    sat = ax.draw_saturation_line()
+    fig.canvas.draw()
+    data_at_atm = sat.get_data()
+
+    ax.pressure = 75000.
+    fig.canvas.draw()
+    data_at_low_pressure = sat.get_data()
+
+    assert not np.array_equal(data_at_atm, data_at_low_pressure)
+
+
+def test_grid_lines_default_below_data_zorder():
+    fig, ax = setup_mollier_axes()
+    rh, = ax.draw_const_rh_lines(0.5)
+    tdb, = ax.draw_const_tdb_lines(20.)
+    rho, = ax.draw_const_density_lines(1.2)
+    h, = ax.draw_const_h_lines(2e4)
+    w, = ax.draw_const_w_lines(2e-2)
+    sat = ax.draw_saturation_line()
+
+    default_line_zorder = Line2D([], []).get_zorder()
+    for grid_line in (rh, tdb, rho, h, w):
+        assert grid_line.get_zorder() < default_line_zorder
+    # The saturation boundary is drawn above the other backdrop lines, but
+    # still below regular plot data.
+    assert rh.get_zorder() < sat.get_zorder() < default_line_zorder
