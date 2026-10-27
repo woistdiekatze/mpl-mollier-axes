@@ -1,6 +1,14 @@
 # Design outline: hastate-backed lines and display-space sampling
 
-Status: **draft for review** (tracking issue: #11). Companion to `woistdiekatze/hastate` `docs/design/lines.md`. No code changes accompany this document.
+Status: **draft, decisions recorded** (tracking issue: #11). Companion to `woistdiekatze/hastate` `docs/design/lines.md`. No code changes accompany this document.
+
+## Decisions
+
+- **Hard dependency on `hastate`.** All psychrometric calculation goes through it; no local backend protocol and no duck-typing fallback for lines.
+- Quadrature is numpy-only in `hastate` (scipy accelerator: woistdiekatze/hastate#2).
+- Backends expose capability flags; unsupported properties raise `UnsupportedPropertyError` (relevant for tick/label code that might request optional properties).
+- Altitude / standard-pressure helper lives in `hastate` (woistdiekatze/hastate#3); this library drops its direct `psychrolib` use in favour of it.
+- Packaging (PyPI vs. PEP 621 vs. both) still open, see section 7.
 
 ## 1. Current state (commit d9b582f)
 
@@ -34,12 +42,13 @@ Sampling for display is independent of any numerical integration done in `hastat
 
 - Resolution is delegated to `hastate` (explicit `backend=` > `hastate.set_backend()` > `HASTATE_BACKEND` > `MissingBackendError`).
 - `MollierAxes.__init__` resolves the backend once and stores it on the instance; lines receive it from the axes. No module-level global in this library.
-- Remove direct `psychrolib` usage from `MollierAxes`; take the standard-pressure helper from `hastate`.
-- Packaging: `mpl-mollier-axes[coolprop]` / `[psychrolib]` forward to `hastate[...]`. This needs PEP 621 `[project.optional-dependencies]` or PyPI releases (Poetry git-dependency extras forwarding is awkward).
+- Remove direct `psychrolib` usage from `MollierAxes`; take the standard-pressure helper from `hastate` (#3 there).
+- `PsychrometricBackend` and `PsychrolibBackend` are removed from this library (re-exported with a deprecation warning for one release if needed).
+- Packaging: `mpl-mollier-axes[coolprop]` / `[psychrolib]` forward to `hastate[...]`; see section 7.
 
 ## 5. Plotting states and processes
 
-Accept anything exposing `W` and `H` (`Protocol`), so `HaState`, plain dataclasses and tuples work without importing `hastate` types:
+Accept anything exposing `W` and `H` (`Protocol`), so `HaState`, plain dataclasses and tuples work. This applies to plotted **points**; lines come from `hastate` and are not duck-typed.
 
 ```python
 ax.plot_state(point, **style)
@@ -48,13 +57,16 @@ ax.plot_process(a, b, **style)     # straight segment, or a Line segment if prov
 
 ## 6. Migration / compatibility
 
-- Breaking for 0.2.0: PsychroLib no longer a mandatory dependency; `PsychrometricBackend` moves to (or is re-exported from) `hastate`. CHANGELOG entry required.
+- Breaking for 0.2.0: PsychroLib and scipy no longer mandatory here (they follow from the chosen `hastate` extra); `PsychrometricBackend` moves to `hastate`. CHANGELOG entry required.
 - `n_points` stays accepted for one release, with a deprecation warning, as a cap on refinement.
 - Tests: parametrize over installed backends; add pixel-tolerance tests with fixed figure size.
 
-## 7. Open questions
+## 7. Packaging and remaining questions
 
-1. Hard dependency on `hastate` vs. a thin local protocol plus duck typing. This document assumes the hard dependency (single calculation source).
-2. Does `scipy` remain needed here once `fsolve` usage moves to `hastate`?
-3. Redraw cost with CoolProp: needs a benchmark once vectorized backends exist.
-4. README.rst is empty and the Python 3.8 classifier contradicts `python = "^3.10"`; fix alongside.
+Extras forwarding to `hastate[...]` depends on the packaging decision recorded in woistdiekatze/hastate#1.
+
+Remaining:
+
+1. Does `scipy` remain needed here once `fsolve` usage moves to `hastate`? Expected: no.
+2. Redraw cost with CoolProp: needs a benchmark once vectorized backends exist.
+3. README.rst is empty and the Python 3.8 classifier contradicts `python = "^3.10"`; fix alongside.
