@@ -8,7 +8,7 @@ Status: **draft, decisions recorded** (tracking issue: #11). Companion to `woist
 - Quadrature is numpy-only in `hastate` (scipy accelerator: woistdiekatze/hastate#2).
 - Backends expose capability flags; unsupported properties raise `UnsupportedPropertyError` (relevant for tick/label code that might request optional properties).
 - Altitude / standard-pressure helper lives in `hastate` (woistdiekatze/hastate#3); this library drops its direct `psychrolib` use in favour of it.
-- Packaging (PyPI vs. PEP 621 vs. both) still open, see section 7.
+- **Packaging: uv + PEP 621, dev-only for now.** PyPI is a goal once the project matures, not a current requirement. See section 7.
 
 ## 1. Current state (commit d9b582f)
 
@@ -44,7 +44,7 @@ Sampling for display is independent of any numerical integration done in `hastat
 - `MollierAxes.__init__` resolves the backend once and stores it on the instance; lines receive it from the axes. No module-level global in this library.
 - Remove direct `psychrolib` usage from `MollierAxes`; take the standard-pressure helper from `hastate` (#3 there).
 - `PsychrometricBackend` and `PsychrolibBackend` are removed from this library (re-exported with a deprecation warning for one release if needed).
-- Packaging: `mpl-mollier-axes[coolprop]` / `[psychrolib]` forward to `hastate[...]`; see section 7.
+- Extras: `mpl-mollier-axes[coolprop]` / `[psychrolib]` forward to `hastate[...]` via standard PEP 621 metadata; see section 7.
 
 ## 5. Plotting states and processes
 
@@ -61,12 +61,17 @@ ax.plot_process(a, b, **style)     # straight segment, or a Line segment if prov
 - `n_points` stays accepted for one release, with a deprecation warning, as a cap on refinement.
 - Tests: parametrize over installed backends; add pixel-tolerance tests with fixed figure size.
 
-## 7. Packaging and remaining questions
+## 7. Packaging: uv + PEP 621, dev-only for now
 
-Extras forwarding to `hastate[...]` depends on the packaging decision recorded in woistdiekatze/hastate#1.
+Full rationale in `woistdiekatze/hastate` `docs/design/lines.md`, section 7. For this repo:
+
+- Convert `[tool.poetry]` to `[project]` + `[project.optional-dependencies]` + `[dependency-groups]`; keep the conditional scipy pins as PEP 508 markers until `fsolve` usage has moved to `hastate`, then drop scipy here.
+- `hastate` is declared as a normal dependency; local development resolves it through `[tool.uv.sources]` with `path = "../hastate"` and `editable = true`.
+- Switch the build backend from `poetry-core` to `uv_build` (or hatchling).
+- No PyPI release now. Others installing from git need a git source pinned to a tag or commit. Update the `.github` workflows to check out `hastate` next to this repo (or use the pinned git source).
+- Version bumps (e.g. 0.2.0) remain meaningful for the changelog, but they are not PyPI releases at this stage.
 
 Remaining:
 
-1. Does `scipy` remain needed here once `fsolve` usage moves to `hastate`? Expected: no.
-2. Redraw cost with CoolProp: needs a benchmark once vectorized backends exist.
-3. README.rst is empty and the Python 3.8 classifier contradicts `python = "^3.10"`; fix alongside.
+1. Redraw cost with CoolProp: needs a benchmark once vectorized backends exist.
+2. README.rst is empty and the Python 3.8 classifier contradicts `python = "^3.10"`; fix alongside.
